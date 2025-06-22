@@ -57,11 +57,11 @@
         name:
           - git
           - htop
-          - jq
           - ghostty
           - code
           - stow
           - neovim
+          - ffmpeg-free
         state: present
 
 - name: Install Flatpak apps
