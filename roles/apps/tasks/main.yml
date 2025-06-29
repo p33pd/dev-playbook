@@ -61,7 +61,6 @@
           - code
           - stow
           - neovim
-          - ffmpeg-free
         state: present
 
 - name: Install Flatpak apps
