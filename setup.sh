@@ -2,28 +2,36 @@
 
 set -euo pipefail
 
-echo "🔧 Starting workstation setup..."
+VENV_DIR=".venv"
 
-# Install pipx if not present
-if ! command -v pipx &>/dev/null; then
-    echo "🐍 Installing pipx..."
-    sudo dnf install pipx
-    pipx ensurepath
+echo "Starting workstation setup..."
+
+# System deps Ansible's dnf module needs on Fedora
+echo "Ensuring system Python deps..."
+sudo dnf install -y python3 python3-pip python3-libdnf5
+
+# Create venv if missing
+if [[ ! -d "$VENV_DIR" ]]; then
+    echo "Creating Python venv at $VENV_DIR..."
+    # --system-site-packages lets the venv import python3-libdnf5 (not on PyPI)
+    python3 -m venv --system-site-packages "$VENV_DIR"
 fi
 
-# Install Ansible if not present
-if ! command -v ansible &>/dev/null; then
-    echo "📦 Installing Ansible..."
-    pipx install --include-deps ansible ansible-lint
-    sudo dnf install python3-libdnf5
-fi
+# shellcheck disable=SC1091
+source "$VENV_DIR/bin/activate"
 
-# Install Ansible Galaxy requirements if present and not empty
+echo "Upgrading pip & installing Ansible..."
+pip install --upgrade pip
+pip install ansible ansible-lint
+
+# Install Galaxy collections
 if [[ -s requirements.yml ]]; then
-    echo "⬇️  Installing Ansible Galaxy requirements..."
+    echo "Installing Ansible Galaxy requirements..."
     ansible-galaxy install -r requirements.yml
 fi
 
-# Run the Ansible playbook
-echo "🚀 Running Ansible playbook..."
-ansible-playbook  main.yml --ask-become-pass
+echo "Linting playbook..."
+ansible-lint main.yml || true
+
+echo "Running Ansible playbook..."
+ansible-playbook main.yml --ask-become-pass
