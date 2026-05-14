@@ -6,8 +6,11 @@
     - name: Add COPR
       become: true
       community.general.copr:
-        name: scottames/ghostty
+        name: "{{ item }}"
         state: enabled
+      loop:
+        - scottames/ghostty
+        - atim/starship
 
 - name: Install dnf packages
   tags:
@@ -23,6 +26,7 @@
       become: true
       ansible.builtin.package:
         name:
+          - awscli
           - bat
           - btop
           - cargo
@@ -37,6 +41,12 @@
           - golang
           - htop
           - neovim
+          - php-cli
+          - php-common
+          - php-mbstring
+          - php-pdo
+          - php-sodium
+          - php-xml
           - procs
           - ripgrep
           - starship
@@ -51,6 +61,7 @@
       - io.missioncenter.MissionCenter
       - com.bitwarden.desktop
       - com.github.IsmaelMartinez.teams_for_linux
+      - com.logseq.Logseq
     state: present
   tags:
     - apps
