@@ -36,6 +36,7 @@
           - eza
           - fd-find
           - fzf
+          - gimp
           - git
           - ghostty
           - golang
@@ -49,6 +50,7 @@
           - php-xml
           - procs
           - ripgrep
+          - solaar
           - starship
           - stow
           - zoxide
@@ -72,3 +74,9 @@
   tags:
     - apps
     - docker
+
+- name: Include script-installed apps
+  ansible.builtin.import_tasks: script_apps.yml
+  tags:
+    - apps
+    - script_apps
