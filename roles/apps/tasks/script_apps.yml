@@ -1,9 +1,21 @@
 - name: Install Zed editor
   ansible.builtin.shell:
     cmd: curl -f https://zed.rs/install.sh | sh
-    creates: "{{ ansible_env.HOME }}/.local/bin/zed"
+    creates: "{{ ansible_facts['env']['HOME'] }}/.local/bin/zed"
 
 - name: Install Bun
   ansible.builtin.shell:
     cmd: curl -fsSL https://bun.sh/install | sh
-    creates: "{{ ansible_env.HOME }}/.bun/bin/bun"
+    creates: "{{ ansible_facts['env']['HOME'] }}/.bun/bin/bun"
+
+- name: Install xh
+  ansible.builtin.shell:
+    cmd: curl -sfL https://raw.githubusercontent.com/ducaale/xh/master/install.sh | sh
+    creates: "{{ ansible_facts['env']['HOME'] }}/.local/bin/xh"
+  environment:
+    XH_BINDIR: "{{ ansible_facts['env']['HOME'] }}/.local/bin"
+
+- name: Install lazydocker
+  ansible.builtin.shell:
+     cmd: curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+     creates: "{{ ansible_facts['env']['HOME'] }}/.local/bin/lazydocker"
