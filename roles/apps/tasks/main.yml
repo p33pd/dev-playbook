@@ -42,20 +42,23 @@
           - ghostty
           - golang
           - htop
+          - jq
           - neovim
           - php-cli
           - php-common
           - php-mbstring
           - php-pdo
+          - php-pecl-redis
           - php-sodium
           - php-xml
           - procs
           - ripgrep
+          - rust
           - solaar
           - starship
           - stow
+          - tldr
           - zoxide
-          - rust
         state: present
 
 - name: Install Flatpak apps
